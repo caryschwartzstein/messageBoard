@@ -15,12 +15,16 @@ app.use(
 )
 app.use(bodyParser.json())
 
-db = "mongodb://localhost:27017/messageBoardDB"
+// db = "mongodb://localhost:27017/messageBoardDB"
+// If deployed, use the deployed database. Otherwise use the local database
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/messageBoardDB";
+mongoose.Promise = Promise;
 
 mongoose
     .connect(
-        db, 
-        {useNewUrlParser: true}
+        MONGODB_URI || "mongodb://localhost:27017/messageBoardDB", 
+        {useNewUrlParser: true,
+        useUnifiedTopology: true}
     )
     .then(() => console.log("MongoDB successfully connected"))
     .catch(err => console.log(err));
