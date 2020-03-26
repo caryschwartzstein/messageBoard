@@ -6,9 +6,11 @@ const mongoose = require("mongoose");
 const {Post} = require("../../models/Post")
 
 router.post("/create", (req, res) => {
+    console.log("USER Here", req.body.user)
     const newPost = new Post({
-        user: "User",
+        user: req.body.user,
         content: req.body.content,
+        name: req.body.name
     });
 
     newPost
