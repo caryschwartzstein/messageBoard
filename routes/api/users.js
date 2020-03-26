@@ -93,4 +93,17 @@ router.post("/login", (req, res) => {
     })
 })
 
+router.get("/all", (req, res) => {
+    console.log("fetching users")
+    User
+        .find()
+        .then(users => res.send(users))
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving users"
+            })
+        })
+})
+
+
 module.exports = router;
