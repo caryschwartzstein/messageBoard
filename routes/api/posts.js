@@ -20,6 +20,7 @@ router.post("/create", (req, res) => {
 })
 
 router.get("/all", (req, res) => {
+    console.log("fetching posts");
     Post
         .find()
         .then(posts => res.send(posts.reverse()))
@@ -28,6 +29,10 @@ router.get("/all", (req, res) => {
                 message: err.message || "Some error occurred while retrieving posts"
             })
         })
+})
+
+router.get("/asdf", (req, res) => {
+    res.send({"asdf": true})
 })
 
 module.exports = router;

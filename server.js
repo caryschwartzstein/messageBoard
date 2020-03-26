@@ -5,6 +5,7 @@ const passport = require("passport");
 
 const posts = require('./routes/api/posts')
 const users = require('./routes/api/users')
+var env = process.env.NODE_ENV || 'dev';
 
 const app = express();
 
@@ -18,7 +19,7 @@ app.use(bodyParser.json())
 // db = "mongodb://localhost:27017/messageBoardDB"
 // If deployed, use the deployed database. Otherwise use the local database
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/messageBoardDB";
-mongoose.Promise = Promise;
+// mongoose.Promise = Promise;
 
 mongoose
     .connect(
@@ -35,7 +36,7 @@ if (process.env.NODE_ENV === "production") {
             res.sendFile(path.resolve(__dirname,  "build", "index.html"));
         });
     }
-    
+
 app.use(passport.initialize())
 require("./config/passport")(passport)
 
@@ -46,3 +47,22 @@ app.use("/api/posts", posts);
 const port = process.env.Port || 5000;
 
 app.listen(port, () => console.log(`Server up and running on port ${port}`))
+
+//nodemon not properly restarting
+if (env == "dev") {
+    var nodemon = require('nodemon');
+    process
+    // Handle normal exits
+    .on('exit', (code) => {
+        nodemon.emit('quit');
+        process.exit(code);
+    })
+
+    // Handle CTRL+C
+    .on('SIGINT', () => {
+        nodemon.emit('quit');
+        process.exit(0);
+    });
+}
+
+
